@@ -1,11 +1,12 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from utils import plot_country
+from utils import plot_country, plot_world, plot_state
 
 #-------------------------------------------------------------------------
 st.title("Plotting COVID-19 Data")
 
+domain = st.selectbox("Show results for: ", ("world","country"))
 
 #-------------------------------------------------------------------------
 data_path = 'COVID-19/csse_covid_19_data/csse_covid_19_time_series/'
@@ -29,9 +30,25 @@ df = pd.read_csv(csv_path)
 
 st.dataframe(df)
 
-countries = np.unique(df['Country/Region'].values)
+#----------------------------------------------------------------
 
-# Selectbox
-country = st.selectbox("Please select the country you want to view: ", countries)
-plot_country(df, country, case)
-st.pyplot()
+if(domain == "world"):
+    plot_world(df, case)
+    st.pyplot()
+
+if(domain == "country"):
+    countries = np.unique(df['Country/Region'].values)
+    # Selectbox
+    country = st.selectbox("Please select the country you want to view: ", countries)
+    plot_country(df, country, case)
+    st.pyplot()
+    country_df = df[df['Country/Region'] == country]
+
+    if not(country_df.shape[0] == 1):
+        if(st.checkbox("Show province/state wise plot:")):
+            states = np.unique(country_df['Province/State'].values)
+            state = st.selectbox("Please select the state you want to view: ", states)
+            plot_state(country_df, state, case)
+            st.pyplot()
+
+
