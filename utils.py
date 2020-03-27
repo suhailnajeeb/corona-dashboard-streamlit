@@ -19,3 +19,30 @@ def plot_country(df, country, case):
     plt.bar(dates, patients)
     plt.title('No of ' + case + ' cases for : ' + country)
     
+def plot_world(df, case):
+    dates = df.columns[4:]
+    dates = [datetime.strptime(d, "%m/%d/%y").date() for d in dates]
+    patients = df.sum(axis=0, skipna=True)[2:]
+    patients = [p for p in patients]
+    plt.figure(figsize=(20, 5))
+    ax = plt.gca()
+    formatter = mdates.DateFormatter("%Y-%m-%d")
+    ax.xaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_locator(mdates.DayLocator(interval=5))
+    plt.bar(dates, patients)
+    plt.title('No of ' + case + ' cases acroos the globe')
+
+def plot_state(df, state, case):
+    state_df = df[df['Province/State'] == state]
+    dates = state_df.columns[4:]
+    dates = [datetime.strptime(d, "%m/%d/%y").date() for d in dates]
+    patients = state_df.sum(axis=0, skipna=True)[4:]
+    patients = [p for p in patients]
+    #patients = country_df.values[0][4:]
+    plt.figure(figsize=(20, 5))
+    ax = plt.gca()
+    formatter = mdates.DateFormatter("%Y-%m-%d")
+    ax.xaxis.set_major_formatter(formatter)
+    ax.xaxis.set_major_locator(mdates.DayLocator(interval=5))
+    plt.bar(dates, patients)
+    plt.title('No of ' + case + ' cases for : ' + state)
