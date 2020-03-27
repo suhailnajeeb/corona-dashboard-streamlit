@@ -70,7 +70,7 @@ for country in countries:
     if not(country_df.shape[0] == 1):
         statewala.append(country)
 
-country_df = df[df['Country/Region'] == 'China']
+country_df = df[df['Country/Region'] == 'US']
 
 plot_state(country_df, state = 'Hebei', case = 'confirmed')
 #plot_country(df, 'Bangladesh')
